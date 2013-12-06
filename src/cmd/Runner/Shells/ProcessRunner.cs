@@ -33,14 +33,17 @@ namespace cmd.Runner.Shells
                                     FileName = runOptions.Command,
                                     Arguments = runOptions.Arguments,
                                     UseShellExecute = false,
-                                    RedirectStandardOutput = true
+                                    RedirectStandardOutput = true,
+                                    RedirectStandardError = true
                                 }
                         };
-            process.Start();
-            var output = process.StandardOutput.ReadToEnd();
-            process.WaitForExit();
 
-            return output;
+            System.Text.StringBuilder output = new System.Text.StringBuilder();
+            process.Start();
+            output.Append(process.StandardOutput.ReadToEnd());
+            output.Append(process.StandardError.ReadToEnd());
+            process.WaitForExit();
+            return output.ToString();
         }
     }
 }
